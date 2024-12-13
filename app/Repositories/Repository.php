@@ -20,60 +20,60 @@ abstract class Repository
             return $query->get();
         }
 
-        $options = [
+        return $query->paginate(
             $params['perPage'],
             $params['columns'],
             'page',
             $params['page'],
-        ];
-
-        return $query->paginate($options)->withQueryString();
+        )
+        ->withQueryString();
     }
 
     private function query(array $params)
     {
         extract($params);
 
-        return $this->model->select($columns)
-            ->when($this->isEmptyArray($where),
+        return $this->model->select($columns ?? ['*'])
+            ->when(
+                isset($where) && !$this->isEmptyArray($where),
                 function ($query) use ($where) {
                     foreach ($where as $columnName => $value) {
-                        if (!is_string($columnName)) {
-                            continue;
+                        if (is_string($columnName)) {
+                            $query->where($columnName, $value);
                         }
-
-                        $query->where($columnName, $value);
                     }
-        })
-        ->when(is_string($orderBy) && (is_string($sortBy) || is_array($sortBy)),
-            function ($query) use ($sortBy, $orderBy) {
-                if (is_string($sortBy) && !strpos($sortBy, ',')) {
-                    return $query->orderBy(
-                        $sortBy,
-                        $orderBy
-                    );
                 }
+            )
+            ->when(
+                isset($orderBy) && is_string($orderBy) && isset($sortBy) && (is_string($sortBy) || is_array($sortBy)),
+                function ($query) use ($sortBy, $orderBy) {
+                    if (is_string($sortBy) && !str_contains($sortBy, ',')) {
+                        $query->orderBy($sortBy, $orderBy);
+                    } elseif (is_string($sortBy) && str_contains($sortBy, ',')) {
+                        $sortBy = explode(',', $sortBy);
+                    }
 
-                if (is_string($sortBy) && strpos($sortBy, ',')) {
-                    $sortBy = explode(',', $sortBy);
+                    if (is_array($sortBy)) {
+                        foreach ($sortBy as $column) {
+                            $query->orderBy(trim($column), $orderBy);
+                        }
+                    }
                 }
-
-                foreach ($sortBy as $column) {
-                    $query->orderBy($column, $orderBy);
+            )
+            ->when(
+                isset($offset, $limit) && (!isset($paginate) || !$paginate),
+                function ($query) use ($offset, $limit) {
+                    $query->skip($offset)->take($limit);
                 }
-
-        })
-        ->when($offset && (isset($paginate) == false || $paginate == false),
-            function ($query) use ($offset, $limit) {
-                $query->skip($offset)->take($limit);
-        })
-        ->when(is_array($relations) && !$this->isEmptyArray($relations),
-            function ($query) use ($relations) {
-                foreach ($relations as $relation) {
-                    $query->with($relation);
+            )
+            ->when(
+                isset($relations) && is_array($relations) && !$this->isEmptyArray($relations),
+                function ($query) use ($relations) {
+                    $query->with($relations);
                 }
-        });
+            );
     }
+
 
     public function first($params = [])
     {

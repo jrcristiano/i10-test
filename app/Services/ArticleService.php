@@ -13,20 +13,17 @@ class ArticleService extends Service
         parent::__construct($repository);
     }
 
-    public function getAll(Request $request)
+    public function getPaginatedArticleListByUserId()
     {
+        $columns = $this->getModel()->getFillable();
+
         return $this->repository->fetchAll([
-            ...$this->filters($request),
-            'columns' => [
-                'id',
-                'name',
+            'paginated' => true,
+            'columns' => $columns,
+            'where' => [
+                'user_id' => Auth::user()->id,
             ],
         ]);
-    }
-
-    public function getArticleListByUserId()
-    {
-        return $this->repository->fetchAll();
     }
 
     public function findArticleBySlugOrFail(string $slug)

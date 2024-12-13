@@ -25,10 +25,11 @@ class ArticleRequest extends FormRequest
 
        return [
             'banner' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'title' => "required|string|min:3|max:255|unique:articles,title,{$articleId}",
+            'title' => "required|string|unique:articles,title,{$articleId}|min:3|max:255|regex:/^[\S]+(?:[\s\S]*[\S]+)?$/",
             'subtitle' => "required|string|min:3|max:255|unique:articles,subtitle,{$articleId}",
             'content' => 'required|string|min:5',
-            'category_id' => 'required|numeric',
+            'status' => 'required|in:rascunho,publicado',
+            'category_id' => 'required|numeric|exists:categories,id',
         ];
     }
 }

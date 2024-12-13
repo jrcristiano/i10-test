@@ -13,7 +13,7 @@ class CategoryService extends Service
         parent::__construct($repository);
     }
 
-    public function getAll(Request $request)
+    public function getCategoryListWithIdAndName(Request $request)
     {
         return $this->repository->fetchAll([
             ...$this->filters($request),

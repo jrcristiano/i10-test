@@ -24,7 +24,7 @@ class ArticleController extends Controller
     public function index(Request $request)
     {
         return view('welcome', [
-            'articles' => $this->getPaginatedArticleList($request),
+            'articles' => $this->articleService->getPaginatedArticleList($request),
         ]);
     }
 
@@ -35,17 +35,17 @@ class ArticleController extends Controller
         ]);
     }
 
-    public function getPaginatedArticleList()
+    public function getPaginatedArticleList(Request $request)
     {
         return view('articles.index', [
-            'articles' => [], // $this->getPaginatedArticleList($request),
+            'articles' => $this->articleService->getPaginatedArticleList($request),
         ]);
     }
 
-    public function getArticleListByUserId()
+    public function getPaginatedArticleListByUserId()
     {
         return view('articles.my-articles', [
-            'articles' => $this->articleService->getArticleListByUserId(),
+            'articles' => $this->articleService->getPaginatedArticleListByUserId(),
         ]);
     }
 
@@ -55,7 +55,7 @@ class ArticleController extends Controller
     public function create(Request $request)
     {
         return view('articles.create', [
-            'categories' => $this->categoryService->getAll($request),
+            'categories' => $this->categoryService->getCategoryListWithIdAndName($request),
         ]);
     }
 
@@ -66,20 +66,20 @@ class ArticleController extends Controller
     {
         $data = $request->only(array_keys($request->rules()));
 
-        $createdArticle = $this->articleService->saveArticle($data);
+        $savedArticle = $this->articleService->saveArticle($data);
 
         return redirect()->route('welcome')
-            ->with('success', "Artigo {$createdArticle->title} foi criado com sucesso.");
+            ->with('success', "Artigo {$savedArticle->title} foi criado com sucesso.");
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(int $id)
+    public function edit(Request $request, int $id)
     {
         return view('articles.edit', [
             'article' => $this->articleService->findArticleByIdOrFail($id),
-            'categories' => [],
+            'categories' => $this->categoryService->getCategoryListWithIdAndName($request),
         ]);
     }
 

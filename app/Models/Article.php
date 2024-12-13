@@ -65,4 +65,11 @@ class Article extends Model
     {
         return Str::limit($this->attributes['title'], 18);
     }
+
+    public function getFillable(): array
+    {
+        $fillable = $this->fillable;
+        $fillable[] = 'created_at';
+        return $fillable;
+    }
 }

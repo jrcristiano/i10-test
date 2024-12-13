@@ -40,10 +40,10 @@ class CategoryController extends Controller
     {
         $data = $request->only(array_keys($request->rules()));
 
-        $createdCategory = $this->categoryService->saveCategory($data);
+        $savedCategory = $this->categoryService->saveCategory($data);
 
         return redirect()->route('categories.index')
-            ->with('success', "Categoria {$createdCategory->title} foi criada com sucesso.");
+            ->with('success', "Categoria {$savedCategory->title} foi criada com sucesso.");
     }
 
     /**

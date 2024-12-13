@@ -109,29 +109,31 @@ abstract class Service
 
     protected function filters(Request $request): array
     {
-        $filter = [];
+        $filters = [];
 
-        $columns = $request->get('columns');
-        $where = $request->get('where');
-        $orderBy = $request->get('orderBy');
-        $sortBy = $request->get('sortBy');
-        $perPage = $request->get('perPage');
-        $paginated = $request->get('paginated');
-        $limit = $request->get('limit');
-        $offset = $request->get('offset');
-        $relations = $request->get('relations') ?? [];
+        $filters['columns'] = $request->filled('columns') ? explode(',', $request->get('columns')) : ['*'];
 
-        $filter['columns'] = isset($columns) ? explode(',', $columns) : '*';
-        $filter['where'] = $where ?? [];
-        $filter['orderBy'] = $orderBy ?? 'desc';
-        $filter['sortBy'] = $sortBy ?? 'created_at';
-        $filter['paginated'] = isset($paginated) && $paginated == 'true' ? true : false;
-        $filter['perPage'] = $perPage ?? 10;
-        $filter['limit'] = $limit ?? 10;
-        $filter['offset'] = $offset ?? 0;
-        $filter['relations'] = is_array($relations) ? $relations : [$relations];
+        $filters['where'] = $request->get('where', []);
 
-        return $filter;
+        $filters['orderBy'] = $request->get('orderBy', 'desc');
+
+        $filters['sortBy'] = $request->get('sortBy', 'created_at');
+
+        $filters['paginated'] = filter_var($request->get('paginated', false), FILTER_VALIDATE_BOOLEAN);
+
+        $filters['page'] = max((int) $request->get('page', 1), 1);
+
+        $filters['perPage'] = max((int) $request->get('perPage', 10), 1);
+
+        $filters['limit'] = max((int) $request->get('limit', 10), 1);
+
+        $filters['offset'] = max((int) $request->get('offset', 0), 0);
+
+        $filters['relations'] = is_array($request->get('relations'))
+            ? $request->get('relations')
+            : array_filter(explode(',', $request->get('relations', '')));
+
+        return $filters;
     }
 
     protected function getPaginatedData($items, $mappedItems)
