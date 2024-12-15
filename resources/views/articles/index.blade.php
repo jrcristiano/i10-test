@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="d-block col-12 col-xl-10 py-4 bg-white px-0">
-            @include('components.i10-header-section', [
+            @include('components.header-section', [
             'actionText' => 'Novo artigo',
             'routeName' => 'articles.create',
             'title' => 'Artigos'
@@ -34,7 +34,7 @@
 
                     <button
                         type="submit"
-                        class="btn btn-lg btn-gold"
+                        class="btn btn-lg btn-gold shadow-sm h-100 px-4"
                     >
                         <i class="bi bi-search"></i>
                     </button>

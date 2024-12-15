@@ -123,7 +123,7 @@ abstract class Service
 
         $filters['page'] = max((int) $request->get('page', 1), 1);
 
-        $filters['perPage'] = max((int) $request->get('perPage', 10), 1);
+        $filters['perPage'] = max((int) $request->get('perPage', 15), 1);
 
         $filters['limit'] = max((int) $request->get('limit', 10), 1);
 

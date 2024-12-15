@@ -28,7 +28,6 @@ class CategoryService extends Service
     {
         return $this->repository->fetchAll([
             ...$this->filters($request),
-            'perPage' => 15,
             'paginated' => true,
         ]);
     }
