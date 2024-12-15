@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -22,9 +23,9 @@ class Category extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function news()
+    public function articles()
     {
-        return $this->hasMany(News::class);
+        return $this->hasMany(Article::class);
     }
 
     protected static function boot()
@@ -34,5 +35,11 @@ class Category extends Model
         static::saving(function ($category) {
             $category->slug = Str::slug($category->name);
         });
+    }
+
+    public function getCreatedAtFormattedAttribute()
+    {
+        return Carbon::parse($this->attributes['created_at'])
+            ->format('d/m/Y H:i');
     }
 }

@@ -1,3 +1,109 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+@import '../../node_modules/bootstrap-icons/font/bootstrap-icons.css';
+
+body {
+    font-family: "Poppins", sans-serif;
+    outline: none !important;
+}
+
+#dashboard-nav li a {
+    color: rgb(42, 47, 56);
+    padding: 10px 12px;
+}
+
+#dashboard-nav li a:not(.active) i {
+    background-color: #f1f1f1 !important;
+    padding: 10px 14px;
+}
+
+#dashboard-nav a:not(.active) .svg-container {
+    background-color: #f1f1f1;
+    padding: 12px;
+}
+
+.active {
+    font-weight: 500 !important;
+    background-color: rgb(163, 140, 101) !important;
+    color: #fff !important;
+}
+
+.active i {
+    font-weight: 500 !important;
+    background-color: #ffffff3a !important;
+    color: #fff !important;
+    padding: 10px 14px;
+    border: 0px !important;
+}
+
+input, select {
+    box-shadow: none !important;
+}
+
+.i10-data-list {
+    max-height: 65vh !important;
+    overflow-y: scroll;
+}
+
+.i10-data-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.i10-data-list::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.i10-data-list::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.i10-table-rounded {
+    border-radius: 0.375rem !important;
+
+}
+
+#logo {
+    width: 260px;
+}
+
+.fw-500 {
+    font-weight: 500;
+}
+
+.i10-bg-gold {
+    background-color: rgb(163, 140, 101) !important;
+}
+
+.i10-text-dark {
+    color: #2a2f38 !important;
+}
+
+.i10-text-gold {
+    color: rgb(163, 140, 101) !important;
+}
+
+.btn-gold {
+    color: #fff;
+    background-color: rgb(163, 140, 101) !important;
+    border: 0px;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    transition: 0.15s !important;
+}
+
+.btn-gold:hover {
+    color: #fff;
+    background-color: rgb(150, 127, 88) !important;
+}
+
+.pagination > .page-item.active > .page-link {
+    background-color: rgb(150, 127, 88) !important;
+    border: 1px solid rgb(150, 127, 88) !important;
+    font-weight: 500;
+}
+
+.pagination > .page-item:not(.active) > .page-link {
+    color: rgb(150, 127, 88) !important;
+    font-weight: 500;
+}
+

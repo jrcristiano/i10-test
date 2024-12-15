@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\ArticleStatus;
 use App\Enums\UserRole;
 use App\Models\Category;
 use App\Models\User;
@@ -31,13 +32,17 @@ class ArticleFactory extends Factory
             ->inRandomOrder()
             ->first();
 
+        $status = $adminOrRedatorUser->id % 2 ?
+            ArticleStatus::RASCUNHO->value :
+                ArticleStatus::PUBLICADO->value;
+
         return [
             'banner' => '/assets/banners/2024/01/05/slug-unico-do-artigo.jpg', // para fins de exemplo
             'title' => $title,
             'subtitle' => fake()->unique()->text(150),
             'content' => fake()->unique()->paragraphs(5, true),
             'slug' => $slug,
-            'status' => $adminOrRedatorUser->id % 2 ? UserRole::ADMIN : UserRole::REDATOR,
+            'status' => $status,
             'user_id' => $adminOrRedatorUser->id,
             'category_id' => Category::inRandomOrder()->first()->id,
         ];

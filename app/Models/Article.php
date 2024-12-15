@@ -63,7 +63,7 @@ class Article extends Model
 
     public function getShortenedTitleAttribute()
     {
-        return Str::limit($this->attributes['title'], 18);
+        return Str::limit($this->attributes['title'], 30);
     }
 
     public function getFillable(): array

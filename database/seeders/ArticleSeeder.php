@@ -13,7 +13,7 @@ class ArticleSeeder extends Seeder
     public function run(): void
     {
         Article::factory()
-            ->count(15)
+            ->count(500)
             ->create();
     }
 }
